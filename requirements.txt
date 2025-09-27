@@ -1,0 +1,15 @@
+fastapi[standard]
+sqlalchemy
+psycopg2-binary
+passlib[bcrypt]
+jose
+langchain 
+wikipedia 
+langchain-community 
+langchain-openai
+langchain-anthropic
+python-dotenv
+pydantic
+duckduckgo-search
+google-genai
+langchain-google-genai
