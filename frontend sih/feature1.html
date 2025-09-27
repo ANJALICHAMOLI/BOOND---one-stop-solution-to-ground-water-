@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="feature.html" rel="stylesheet">
+
+  <title>FEATURE</title>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      background: linear-gradient(90deg, #8fc7fb, #ffffff);
+      ;
+      color: #222;
+    }
+
+    /* Navbar */
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 30px;
+      background: linear-gradient(90deg, #8fc7fb, #ffffff);
+      ;
+      color: #fff;
+    }
+
+    .navbar a {
+      color: #242323;
+      text-decoration: none;
+      font-size: 16px;
+      font-weight: bold;
+      font: "Times New Roman", Times, serif;
+    }
+
+    .navbar .user-icon {
+      font-size: 18px;
+    }
+
+    /* Feature Section */
+    .feature {
+      text-align: center;
+      padding: 40px 20px 20px;
+    }
+
+    .feature h1,
+    .feature h2 {
+      margin-bottom: 10px;
+      font-size: 28px;
+      color: #06135b;
+    }
+
+    .feature p {
+      font-size: 16px;
+      color: #1a1515;
+      max-width: 1000px;
+      margin: 0 auto;
+      font: Poppins, sans-serif;
+    }
+    .feature p.a {
+      font-size: 15px;
+      color: #1a1515;
+      max-width: 800px;
+      margin: 20px auto 0;
+      font-weight: 500;
+    }
+
+
+  /* Input box */
+  .input-box {
+  background: #fff;
+  padding: 25px;
+  margin: 30px auto;
+  width: 90%;
+  max-width: 500px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  }
+
+  .input-box label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: 600;
+  }
+
+  .input-box input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  }
+
+  .input-box button {
+  width: 100%;
+  padding: 12px;
+  background: #2f7cff;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  cursor: pointer;
+  }
+
+  .input-box button:hover {
+  background: #1e5edc;
+  }
+
+  /* Result Area */
+  .result {
+  display: none;
+  background: #fff;
+  padding: 25px;
+  margin: 20px auto;
+  width: 90%;
+  max-width: 600px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  }
+
+  .result h2 {
+  margin-bottom: 15px;
+  color: #20488b;
+  }
+
+  .result p {
+  margin: 8px 0;
+  }
+
+  pre {
+  background: #f4f4f4;
+  padding: 12px;
+  border-radius: 6px;
+  font-size: 14px;
+  overflow-x: auto;
+  }
+
+  .result .buttons {
+  margin-top: 20px;
+  display: flex;
+  gap: 15px;
+  }
+
+  .result .buttons button {
+  flex: 1;
+  padding: 12px;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  cursor: pointer;
+  }
+
+  .result .buttons .next {
+  background: #093d34;
+  color: #fff;
+  }
+
+  .result .buttons .back {
+  background: #093d34;
+  color: #fff;
+  }
+
+  .result .buttons .next:hover {
+  background: #20a385;
+  }
+
+  .result .buttons .back:hover {
+  background: #20a385;
+  }
+  </style>
+</head>
+
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <a href="feature.html">⬅ Back</a>
+    <div class="user-icon">👤</div>
+  </nav>
+
+  <!-- Feature Section -->
+  <section class="feature">
+    <h1>IS THE ROOFTOP "WORTH" HARVESTING?🌱</h1>
+    <p>This tool helps you figure out whether your roof is a good candidate for rainwater harvesting.</p>
+    <p class="a">Just pop in details like location, the size of your roof, and open space area. In seconds,
+      you’ll know how much water you could be collecting—because why let all that rain just slip away?</p>
+  </section>
+
+  <!-- Input Box -->
+  <div class="input-box">
+    <form id="featureForm">
+      <label for="name">Name</label>
+      <input type="text" id="name" required>
+
+      <label for="location">Location</label>
+      <input type="text" id="location" required>
+
+      <label for="roof">Roof Area (m²)</label>
+      <input type="number" id="roof" required>
+
+      <label for="open">Open Space (m²)</label>
+      <input type="number" id="open" required>
+
+      <button type="submit">SUBMIT</button>
+    </form>
+  </div>
+
+  <!-- Result Area -->
+  <div class="result" id="result">
+    <h2>Result</h2>
+    <p><strong>Can it be built?:</strong> <span id="built"></span></p>
+    <p><strong>Harvesting Type:</strong> <span id="harvest"></span></p>
+    <p><strong>Reason:</strong> <span id="reason"></span></p>
+
+    <h3>Stored JSON Data:</h3>
+    <pre id="jsonOutput"></pre>
+
+    <div class="buttons">
+      <button class="next" onclick="window.location.href='feature2.html'">Go to Cost Estimation</button>
+      <button class="back" onclick="window.location.href='previous.html'">Back</button>
+    </div>
+  </div>
+
+  <script>
+    const form = document.getElementById('featureForm');
+    const result = document.getElementById('result');
+    const built = document.getElementById('built');
+    const harvest = document.getElementById('harvest');
+    const reason = document.getElementById('reason');
+    const jsonOutput = document.getElementById('jsonOutput');
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      // Capture values
+      const data = {
+        name: document.getElementById('name').value,
+        location: document.getElementById('location').value,
+        roofArea: parseFloat(document.getElementById('roof').value),
+        openSpace: parseFloat(document.getElementById('open').value)
+      };
+
+      // Simple decision logic
+      let canBuild = (data.roofArea > 20 || data.openSpace > 30);
+      let harvestType = "";
+      let reasonText = "";
+
+      if (canBuild) {
+        harvestType = (data.roofArea > 20 && data.openSpace > 30) ?
+          "Rooftop + Open Space" :
+          (data.roofArea > 20 ? "Rooftop" : "Open Space");
+        reasonText = "Sufficient area available for rainwater harvesting.";
+      } else {
+        harvestType = "Not feasible";
+        reasonText = "Insufficient area for harvesting.";
+      }
+
+      // Update result area
+      built.textContent = canBuild ? "Yes" : "No";
+      harvest.textContent = harvestType;
+      reason.textContent = reasonText;
+
+      // Store in JSON format
+      const output = {
+        ...data,
+        canBeBuilt: canBuild,
+        harvestingType: harvestType,
+        reason: reasonText
+      };
+
+      jsonOutput.textContent = JSON.stringify(output, null, 2);
+
+      // Show result
+      result.style.display = 'block';
+    });
+  </script>
+
+</body>
+
+</html>

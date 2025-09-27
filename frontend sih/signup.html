@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+  <meta charset='utf-8'/>
+  <meta name='viewport' content='width=device-width,initial-scale=1'/>
+  <title>Sign up</title>
+  <link rel='preconnect' href='https://fonts.googleapis.com'>
+  <link rel='preconnect' href='https://fonts.gstatic.com' crossorigin>
+  <link href='https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap' rel='stylesheet'>
+  <link rel='stylesheet' href='styles.css'/>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-left">
+      <a class="logo" href="index.html" aria-label="Home"></a>
+      <div class="brand" data-i18n=""></div>
+    </div>
+    <div class="nav-right">
+      <!-- Language Switch -->
+      <div class="lang-switch">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M5 8h14M5 12h10M5 16h14" />
+        </svg>
+        <select aria-label="Select language">
+          <option value="en">English</option>
+          <option value="hi">हिन्दी</option>
+        </select>
+      </div>
+    </div>
+  </nav>
+
+  <main class='auth-wrap'>
+    <form class='auth-card form' id='signupForm' autocomplete='on'>
+      <h1 class='h1' data-i18n="createTitle">Create your account</h1>
+      <div class='helper' data-i18n="signupSubtitle">Sign up to start assessing rainwater harvesting potential.</div>
+      <input class='input' id='sname' name='name' type='text' placeholder='Full name' data-i18n-placeholder="namePh" required />
+      <input class='input' id='semail' name='email' type='email' placeholder='Email' data-i18n-placeholder="emailPh" required />
+      <div class='row'>
+        <input class='input' id='spassword' name='password' type='password' placeholder='Password (6+ chars)' data-i18n-placeholder="passwordPh2" required />
+        <input class='input' id='scpassword' name='confirm' type='password' placeholder='Confirm password' data-i18n-placeholder="confirmPh" required />
+      </div>
+      <button class='btn brand' type='submit' data-i18n="createBtn">Create account</button>
+      <div class='flash' id='sflash'></div>
+      <div class='helper'>
+        <span data-i18n="alreadyAcc">Already have an account?</span>
+        <a class='link' href='login.html' data-i18n="loginLink">Log in</a>
+      </div>
+    </form>
+  </main>
+
+  <script src='app.js'></script>
+</body>
+</html>
+

@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Boond</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+</head>
+
+<body>
+
+    <!-- wallpaper overlay (site-wide background) -->
+    <div class="site-overlay"></div>
+
+    <header>
+        <!-- wallpaper upload control -->
+
+
+        <!-- logo + tagline -->
+        <div class="brand">
+            <label for="logoInput" style="cursor:pointer">
+                <img id="logoPreview" src="BOOND LOGO.jpg" alt="Logo preview">
+            </label>
+            <div>
+                <div style="font-weight:700">BOOND</div>
+                <div class="muted" style="font-size:12px">every drop counts</div>
+            </div>
+        </div>
+
+        <!-- navigation -->
+        <nav>
+            <ul>
+                <li><a href="#/">Home</a></li>
+                <li><a href="#contact">Contact</a></li>
+                <li>
+                    <div class="user-pill" title="Logged in user">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="12" cy="8" r="3" stroke="#0a6fb3" stroke-width="1.5" />
+                            <path d="M6 20c0-2.8 3.6-5 6-5s6 2.2 6 5" stroke="#0a6fb3" stroke-width="1.5"
+                                stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                        <span id="username">Guest</span>
+                    </div>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- language + logo upload -->
+        <div style="display:flex;align-items:center;gap:12px">
+            <div class="lang-switch">
+                <button data-lang="en">English</button>
+                <button data-lang="hi">हिन्दी</button>
+            </div>
+            <label class="u-btn" for="logoInput">💧</label>
+            <input id="logoInput" type="file" accept="image/*">
+        </div>
+
+        
+
+
+
+
+    </header>
+
+
+    <main>
+        <!-- Features hero area -->
+        <!-- <div class="location-bar">
+  <input type="text" id="locationInput" placeholder="Search your location..." />
+  <button id="gpsBtn">📍 Use GPS</button>
+</div> -->
+        <div class="location-bar">
+            <div class="location-input-wrapper">
+                <input type="text" id="locationInput" placeholder="Search your location..." />
+            </div>
+            <button id="gpsBtn">📍 Use GPS</button>
+        </div>
+        <div id="map" style="height:400px; margin:20px 0; border-radius:12px; display:none;"></div>
+
+
+        <!-- <section class="hero">
+  <div class="features-hero" style="position: relative; background-image: url(''); background-size: cover; background-position: center;">
+
+    <div class="left" style="position: relative; z-index: 1;">
+      <h1 data-i18n="featuresHeading">Features</h1>
+      <p data-i18n="featuresSub">
+        Explore powerful features that make water harvesting easier and healthier.
+      </p>
+
+      <div class="controls">
+        <label class="upload-small">
+          Upload wallpaper behind (will show behind this panel):
+          <input id="wallpaperInput" type="file" accept="image/*">
+        </label>
+        <label class="upload-small">
+          Upload right-side image:
+          <input id="sideImageInput" type="file" accept="image/*">
+        </label>
+      </div>
+    </div> -->
+
+
+     <section class="hero">
+  <h1 class="features-heading" data-i18n="featuresHeading">EXPLORE POWERFUL FEATURES</h1>
+</section>
+
+
+<!-- 
+    <div class="right" style="position: relative; z-index: 1;">
+      <img
+        id="sideImagePreview"
+        src="https://imgs.search.brave.com/GMPYT-UjLbB3HvGiaVcDT3KrG_bPW7QaTW54hRQ2W_s/rs:fit:500:0:1:0/g:ce/aHR0cHM6Ly93YWxs/cGFwZXJzLmNvbS9p/bWFnZXMvaGQvd2F0/ZXItYWVzdGhldGlj/LXY4bWFhNWpyaWo0/ZG42NWYuanBn"
+        alt="Side image preview"
+        style="max-width: 320px; height: auto;">
+    </div> -->
+
+  </div>
+</section>
+
+
+            <!-- Features list -->
+            <div class="features-list">
+                <div class="feature-card color1" onclick="window.location='feature1.html'">
+                    <div class="thumb"><img src="harvesting feasibility main.jpg" alt="harvesting Feasibility"></div>
+                    <div class="meta">
+                        <h3>Harvesting Feasibility 🏠💧</h3>
+                        <p>Check if your rooftop is ready for rainwater harvesting — get a clear YES/NO with tips to improve your setup.</p>
+                    </div>
+                </div>
+
+                <div class="feature-card color2" onclick="window.location='feature2.html'">
+                    <div class="thumb"><img src="money matters.png" alt="money matter"></div>
+                    <div class="meta">
+                        <h3>Money Matters 💸</h3>
+                        <p>Understand costs, savings, and funding options for water projects.</p>
+                    </div>
+                </div>
+
+                <div class="feature-card color3" onclick="window.location='feature3.html'">
+                    <div class="thumb"><img src="depth.jpg" alt="Groundwater Depth"></div>
+                    <div class="meta">
+                        <h3>Groundwater Depth 📏</h3>
+                        <p>Check the groundwater levels in your area with updated data.</p>
+                    </div>
+                </div>
+
+                <div class="feature-card color4" onclick="window.location='feature4.html'">
+                    <div class="thumb"><img src="rain check.jpg" alt="Rain Check"></div>
+                    <div class="meta">
+                        <h3>Rain Check ☔</h3>
+                        <p>Provides local rainfall data and trends.</p>
+                    </div>
+                </div>
+
+                <div class="feature-card color5" onclick="window.location='feature5.html'">
+                    <div class="thumb"><img src="water runoff.jpg" alt="Runoff Meter"></div>
+                    <div class="meta">
+                        <h3>Runoff Meter ⚡</h3>
+                        <p>Measure and predict water runoff during rains for better planning.</p>
+                    </div>
+                </div>
+
+                <div class="feature-card color6" onclick="window.location='feature6.html'">
+                    <div class="thumb"><img src="red alert.jpg" alt="Design My Pit"></div>
+                    <div class="meta">
+                        <h3>Red Alert Meter ⚠️ </h3>
+                        <p>Real-time Red Alert system notifies users of rising water-borne disease risks in their area.</p>
+                    </div>
+                </div>
+
+                <div class="feature-card color7" onclick="window.location='feature7.html'">
+                    <div class="thumb"><img src="contact a contracto r.jpg" alt="Money Matters"></div>
+                    <div class="meta">
+                        <h3>👷📞 Contact a Contractor</h3>
+                        <p>Need professional help? Instantly connect with verified local contractors to install or maintain your harvesting system.</p>
+                    </div>
+                </div>
+                
+                         
+            </div>
+
+
+            <!-- Subscription plan -->
+            <div class="subscription" id="subscription">
+                <h3 data-i18n="plansHeading">Subscription Plans</h3>
+                <div class="muted">BOOND — Free (7 day pro trial included)</div>
+                <div style="margin-top:8px">BOOND Pro — 99 INR/month<br />BOOND Premium — 200 INR/month
+                </div>
+            </div>
+        </section>
+
+        <!-- Feature detail page -->
+        <section id="featureDetail" class="feature-detail hidden"></section>
+
+        <!-- Contact -->
+        <section id="contact" style="padding:22px 20px;color: #e8d6d6;">
+            <h3>Contact</h3>
+            <div style="max-width:760px">
+                <p><strong>Address:</strong> Akhilesh Das Gupta Institute Of Professional Studies , New Delhi, 1100XX</p>
+                <p><strong>Call:</strong> +91 7217XXXXXX</p>
+                <p><strong>Email:</strong> info@boond.com</p>
+                <p><strong>Followers:</strong> (kept as-is)</p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-grid">
+            <div class="col">
+                <strong>Address</strong>
+                <div>Akhilesh Das Gupta Institute Of Professional Studies , New Delhi, 1100XX</div>
+            </div>
+            <div class="col">
+                <strong>Contact</strong>
+                <div>+91 7217XXXXXX</div>
+                <div>info@boond.com</div>
+            </div>
+            <div class="col">
+                <strong>Followers</strong>
+                <div>Instagram • Facebook • Twitter</div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

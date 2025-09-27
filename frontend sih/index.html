@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang='en'>
+
+<head>
+  <meta charset='utf-8' />
+  <meta name='viewport' content='width=device-width,initial-scale=1' />
+  <title>BOOND</title>
+  <link rel='preconnect' href='https://fonts.googleapis.com'>
+  <link rel='preconnect' href='https://fonts.gstatic.com' crossorigin>
+  <link href='https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap'
+    rel='stylesheet'>
+  <link rel='stylesheet' href='styles.css' />
+</head>
+
+<body>
+  <div class="top-right">
+    <div class='lang-switch' aria-label='Language'>
+      <svg width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2'>
+        <path d='M5 8h14M5 12h10M5 16h14' />
+      </svg>
+      <select aria-label='Select language'>
+        <option value='en'>English</option>
+        <option value='hi'>हिन्दी</option>
+      </select>
+    </div>
+    <div class='nav-cta'>
+      <a class='btn' href='login.html' data-i18n='login'>Login</a>
+    </div>
+  </div>
+
+
+  <header class='hero'>
+    <div class='card'>
+      <div class="card-logo">
+        <img src="image copy.png" alt="Boond Logo">
+      </div>
+
+      <h2 class='h1' data-i18n='title'>BOOND : Turning Every Drop into Sustainable Potential</h2>
+      <div class='sub' data-i18n='subtitle'>On-Spot Evaluation of Rainwater Harvesting & Recharge</div>
+
+      <div class='carousel' aria-roledescription='carousel'>
+        <div class='track'>
+          <div class='slide'><img src='slide1.jpeg' alt=''></div>
+          <div class='slide'><img src='hehe.jpeg' alt=''></div>
+          <div class='slide'><img src='slide3.png' alt='Storage sizing visualization'></div>
+          <div class='slide'><img src='image2.png' alt='Storage sizing visualization'></div>
+        </div>
+        <button class='ctrl prev' aria-label='Previous slide'>‹</button>
+        <button class='ctrl next' aria-label='Next slide' data-i18n='›'>›</button>
+        <div class='dots' aria-label='Slide indicators'></div>
+      </div>
+    </div>
+  </header>
+
+  <script src='app.js'></script>
+</body>
+
+</html>

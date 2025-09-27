@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang='en'>
+
+<head>
+
+
+<link rel="stylesheet" href="styles.css" />
+
+<meta charset='utf-8' />
+<meta name='viewport' content='width=device-width,initial-scale=1' />
+<title>Login</title>
+
+<link rel='preconnect' href='https://fonts.googleapis.com'>
+<link rel='preconnect' href='https://fonts.gstatic.com' crossorigin>
+<link href='https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap'
+  rel='stylesheet'>
+<link rel='stylesheet' href='styles.css' />
+<!-- Backend API link -->
+<script>
+  window.API_BASE_URL = "http://127.0.0.1:8000/auth/login";
+  // If you deploy, replace with https://yourdomain.com
+</script>
+</head>
+
+<body>
+  <nav class="navbar">
+    <div class="nav-left">
+      <a class="logo" href="index.html" aria-label="Home"></a>
+      <div class="brand" data-i18n=""></div>
+    </div>
+    <div class="nav-right">
+      <!-- Language Switch -->
+      <div class="lang-switch">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M5 8h14M5 12h10M5 16h14" />
+        </svg>
+        <select aria-label="Select language">
+          <option value="en">English</option>
+          <option value="hi">हिन्दी</option>
+        </select>
+      </div>
+      <!-- Signup button -->
+      <a class="btn" href="signup.html" data-i18n="signupBtn">Sign up</a>
+    </div>
+  </nav>
+
+  <main class='auth-wrap'>
+    <form class='auth-card form' id='loginForm' autocomplete='on'>
+      <h1 class='h1' data-i18n="welcome">Welcome back</h1>
+      <div class='helper' data-i18n="loginSubtitle">Log in to access the on-spot assessment tool.</div>
+      <input class='input' id='email' name='email' type='email' placeholder='Email' data-i18n-placeholder="emailPh"
+        required />
+      <input class='input' id='password' name='password' type='password' placeholder='Password'
+        data-i18n-placeholder="passwordPh" required />
+      <button class='btn brand' type='submit' data-i18n="loginBtn">LOGIN</button>
+      <div class='flash' id='flash'></div>
+
+      <div class='helper'>
+        <span data-i18n="notReg">Not registered?</span>
+        <a class='link' href='signup.html' data-i18n="createAcc">Create an account</a>
+      </div>
+    </form>
+  </main>
+
+  <script src='app.js'></script>
+</body>
+
+</html>
