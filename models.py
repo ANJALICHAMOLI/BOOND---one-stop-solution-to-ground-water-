@@ -1,9 +1,3 @@
-# For now, models.py can stay empty or just placeholder
-# If you add DB later, define SQLAlchemy models here
-
-# Example placeholder:
-class User:
-    pass
 
 #signup
 from sqlalchemy import Column, Integer, String
