@@ -2,11 +2,11 @@ import sqlalchemy
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
+from dotenv import load_dotenv
+import os
 
-#SQLALCHEMY_DB_URL= 'postgresql://<username>:<password>@ip-address/hostname>/<databasename>'
-
-#SQLALCHEMY_DB_URL= 'postgresql://postgres:22441084@localhost/rainwise_db'
-SQLALCHEMY_DB_URL='postgresql://postgres:YrBGDCvsYwewpioYTeEykseYwXjhpvBB@trolley.proxy.rlwy.net:57196/railway'
+load_dotenv()
+SQLALCHEMY_DB_URL = os.getenv("DATABASE_URL")
 
 
 engine=create_engine(SQLALCHEMY_DB_URL)
