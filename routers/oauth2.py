@@ -4,6 +4,10 @@ from .. import models
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 from fastapi.security import OAuth2PasswordBearer
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
 
 oauth2_scheme= OAuth2PasswordBearer(tokenUrl='login')
 #secret key
@@ -11,9 +15,9 @@ oauth2_scheme= OAuth2PasswordBearer(tokenUrl='login')
 #expiration time
 #for a string like this command 
 # openssl rand -hex 32
-SECRET_KEY="1b6283b98781d26340a9dd4890cd67440fffac1367d6a6af031e27bb6d1be09c"
-ALGORITHM="HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES=30
+SECRET_KEY = os.getenv("SECRET_KEY")
+ALGORITHM = os.getenv("ALGORITHM")
+ACCESS_TOKEN_EXPIRE_MINUTES = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES"))
 
 def create_access_token(data:dict):
     to_encode=data.copy()
