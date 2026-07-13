@@ -1,9 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException, status 
 from sqlalchemy.orm import Session
-from passlib.context import CryptContext
-
 from .. import schemas, models, database,utils
-from app.database import get_db
 
 router = APIRouter(
     prefix="/users",
@@ -42,7 +39,7 @@ def create_user(user: schemas.UserCreate, db: Session = Depends(database.get_db)
 # Get user by ID
 # ----------------------------
 @router.get("/{id}", response_model=schemas.UserOut)
-def get_user(id: int, db: Session = Depends(get_db)):
+def get_user(id: int, db: Session = Depends(database.get_db)):
     user = db.query(models.User).filter(models.User.id == id).first()
     if not user:
         raise HTTPException(
