@@ -10,17 +10,6 @@ router = APIRouter(
     tags=["users"]
 )
 
-# ----------------------------
-# Password hashing setup
-# ----------------------------
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-
-def get_password_hash(password: str):
-    return pwd_context.hash(password)
-
-def verify_password(plain_password: str, hashed_password: str):
-    return pwd_context.verify(plain_password, hashed_password)
-
 
 # ----------------------------
 # Create user
@@ -35,7 +24,7 @@ def create_user(user: schemas.UserCreate, db: Session = Depends(database.get_db)
             detail="Email already registered"
         )
 
-    hashed_password = get_password_hash(user.password)
+    hashed_password = utils.hash(user.password)
 
     new_user = models.User(
         name=user.name,
