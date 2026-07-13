@@ -22,7 +22,7 @@ async def check_feasibility(data: FeasibilityIn):
             roof_area=data.roof_area,
             open_space=data.open_space
         )
-        # ✅ return structured JSON, not just message
+
         return {
             "feasible": result["can_build"],
             "harvesting_type": result["harvesting_type"],
