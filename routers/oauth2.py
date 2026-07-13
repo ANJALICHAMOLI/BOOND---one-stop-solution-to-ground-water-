@@ -1,6 +1,6 @@
 from jose import JWTError, jwt
 from datetime import datetime, timedelta, timezone
-from .. import models
+from .. import schemas
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 from dotenv import load_dotenv
@@ -31,7 +31,7 @@ def verify_access_token (token:str,credentials_exception):
         id:str=payload.get("id")
         if id is None:
             raise credentials_exception
-        token_data=models.Token_Data(id=id)
+        token_data = schemas.TokenData(id=id)
     except JWTError:
         raise credentials_exception
     return token_data
