@@ -1,8 +1,8 @@
 # app/routers/posts.py
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
-from app.agents.harvesting_agent import analyze_feasibility
-from app.agents.cost_agent import analyze_cost_and_schemes
+from ..agents.harvesting_agent import analyze_feasibility
+from ..agents.cost_agent import analyze_cost_and_schemes
 
 router = APIRouter(prefix="/api", tags=["posts"])
 
