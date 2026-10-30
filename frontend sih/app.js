@@ -132,7 +132,7 @@ async function handleLogin(e) {
   }
 
   try {
-    const res = await fetch("http://127.0.0.1:8000/login", {
+    const res = await fetch("/auth/login", {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, password })
@@ -189,7 +189,7 @@ async function handleSignup(e){
   }
 
   try {
-    const res = await fetch("http://127.0.0.1:8000/users/", {
+    const res = await fetch("/users/", {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ name, email, password: pass })
