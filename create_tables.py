@@ -1,10 +1,10 @@
-# create_tables.py
+"""Create any missing database tables without deleting existing data."""
+
 from models import Base
 from database import engine
 
-Base.metadata.drop_all(bind=engine)   # drops all tables
-Base.metadata.create_all(bind=engine) # recreates tables
-print("Tables recreated successfully!") 
+Base.metadata.create_all(bind=engine)
+print("Database tables are ready.")
 
 
 
