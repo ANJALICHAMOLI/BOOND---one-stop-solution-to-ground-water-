@@ -1,8 +1,12 @@
 # app/routers/posts.py
 from fastapi import APIRouter, HTTPException
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from ..agents.harvesting_agent import analyze_feasibility
 from ..agents.cost_agent import analyze_cost_and_schemes
+from ..waterdata.rainfall import (
+    estimate_harvestable_water_liters,
+    fetch_rainfall_data,
+)
 
 router = APIRouter(prefix="/api", tags=["posts"])
 
@@ -51,3 +55,34 @@ async def estimate_cost(data: CostIn):
         }
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+
+# ---- Feature 3: Rainfall and Harvest Estimate ----
+class RainfallIn(BaseModel):
+    location: str
+    roof_area_m2: float = Field(gt=0)
+    days: int = Field(default=30, ge=1, le=366)
+
+
+@router.post("/rainfall")
+def estimate_rainfall(data: RainfallIn):
+    """Fetch recent rainfall and estimate rooftop harvest volume."""
+    try:
+        rainfall = fetch_rainfall_data(data.location, days=data.days)
+        runoff_coefficient = 0.8
+        harvestable_liters = estimate_harvestable_water_liters(
+            rainfall_mm=rainfall["total_rainfall_mm"],
+            roof_area_m2=data.roof_area_m2,
+            runoff_coefficient=runoff_coefficient,
+        )
+    except ValueError as error:
+        raise HTTPException(status_code=404, detail=str(error)) from error
+    except RuntimeError as error:
+        raise HTTPException(status_code=502, detail=str(error)) from error
+
+    return {
+        **rainfall,
+        "roof_area_m2": data.roof_area_m2,
+        "runoff_coefficient": runoff_coefficient,
+        "estimated_harvestable_liters": harvestable_liters,
+    }
