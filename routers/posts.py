@@ -1,9 +1,9 @@
 # app/routers/posts.py
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel, Field
-from ..agents.harvesting_agent import analyze_feasibility
-from ..agents.cost_agent import analyze_cost_and_schemes
-from ..waterdata.rainfall import (
+from agents.harvesting_agent import analyze_feasibility
+from agents.cost_agent import analyze_cost_and_schemes
+from waterdata.rainfall import (
     estimate_harvestable_water_liters,
     fetch_rainfall_data,
 )
