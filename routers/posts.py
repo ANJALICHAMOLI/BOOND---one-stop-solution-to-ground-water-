@@ -7,6 +7,7 @@ from waterdata.rainfall import (
     estimate_harvestable_water_liters,
     fetch_rainfall_data,
 )
+from waterdata.groundwater import fetch_groundwater_level
 
 router = APIRouter(prefix="/api", tags=["posts"])
 
@@ -86,3 +87,20 @@ def estimate_rainfall(data: RainfallIn):
         "runoff_coefficient": runoff_coefficient,
         "estimated_harvestable_liters": harvestable_liters,
     }
+
+
+# ---- Feature 3: Groundwater Depth ----
+class GroundwaterIn(BaseModel):
+    state: str = Field(min_length=1, max_length=100)
+    district: str = Field(min_length=1, max_length=100)
+
+
+@router.post("/groundwater")
+def get_groundwater_level(data: GroundwaterIn):
+    """Return the latest available CGWB monitoring-station reading."""
+    try:
+        return fetch_groundwater_level(state=data.state, district=data.district)
+    except ValueError as error:
+        raise HTTPException(status_code=404, detail=str(error)) from error
+    except RuntimeError as error:
+        raise HTTPException(status_code=502, detail=str(error)) from error
