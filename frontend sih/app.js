@@ -138,7 +138,7 @@ async function handleLogin(e) {
       body: JSON.stringify({ email, password })
     });
 
-    const data = await res.json();
+    const data = await readApiResponse(res);
     console.log("Response:", data);
 
     if (!res.ok) {
@@ -195,7 +195,7 @@ async function handleSignup(e){
       body: JSON.stringify({ name, email, password: pass })
     });
 
-    const data = await res.json();
+    const data = await readApiResponse(res);
     console.log("Signup response:", data);
 
     if (!res.ok) {
@@ -213,6 +213,19 @@ async function handleSignup(e){
       flash.textContent = err.message; // show exact backend error
       flash.style.color = 'var(--danger)';
     }
+  }
+}
+
+async function readApiResponse(response) {
+  const responseText = await response.text();
+  if (!responseText) return {};
+
+  try {
+    return JSON.parse(responseText);
+  } catch {
+    return {
+      detail: `Server returned HTTP ${response.status}: ${responseText.slice(0, 200)}`
+    };
   }
 }
 
