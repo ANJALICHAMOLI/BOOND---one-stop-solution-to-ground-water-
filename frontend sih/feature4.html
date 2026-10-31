@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rain Check | Boond</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    body {
+      min-height: 100vh;
+      padding: 110px 20px 40px;
+      background: linear-gradient(145deg, #e6f4ff, #f5fffb);
+      color: #15253a;
+    }
+
+    .rainfall-card {
+      width: min(680px, 100%);
+      margin: 24px auto;
+      padding: 30px;
+      border: 1px solid #d5e6ee;
+      border-radius: 20px;
+      background: #fff;
+      box-shadow: 0 18px 50px #17364a18;
+    }
+
+    h1 { margin: 0 0 10px; color: #123b56; }
+    .intro { margin: 0 0 24px; line-height: 1.6; color: #526777; }
+    .rainfall-form { display: grid; gap: 14px; }
+    .rainfall-form label { display: grid; gap: 6px; font-weight: 650; }
+    .rainfall-form input {
+      width: 100%;
+      padding: 11px 12px;
+      border: 1px solid #bdced8;
+      border-radius: 10px;
+      font: inherit;
+    }
+    .rainfall-form input:focus { outline: 3px solid #2f7cff33; border-color: #2f7cff; }
+    .rainfall-form button {
+      padding: 12px 16px;
+      border: 0;
+      border-radius: 10px;
+      background: #147d71;
+      color: white;
+      font: inherit;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .rainfall-form button:disabled { opacity: .65; cursor: wait; }
+    .message { margin: 16px 0 0; color: #9c2f2f; }
+    .result {
+      margin-top: 22px;
+      padding: 18px;
+      border-radius: 14px;
+      background: #f0faf7;
+    }
+    .result h2 { margin: 0 0 12px; color: #14554d; }
+    .result p { margin: 8px 0; }
+    .source-note { margin-top: 16px !important; font-size: .9rem; color: #566b70; }
+    [hidden] { display: none !important; }
+  </style>
+</head>
+<body>
+  <nav class="navbar" aria-label="Main navigation">
+    <a class="brand" href="feature.html">← Back to features</a>
+    <a class="brand" href="index.html">Boond</a>
+  </nav>
+
+  <main class="rainfall-card">
+    <h1>Rain Check ☔</h1>
+    <p class="intro">See recent rainfall for your area and estimate how much water your roof could collect.</p>
+
+    <form class="rainfall-form" id="rainfallForm">
+      <label for="location">
+        City or location
+        <input id="location" name="location" type="text" placeholder="e.g. Jaipur, India" required>
+      </label>
+
+      <label for="roofArea">
+        Roof catchment area (m²)
+        <input id="roofArea" name="roofArea" type="number" min="0.01" step="0.01" required>
+      </label>
+
+      <label for="days">
+        Rainfall period (days)
+        <input id="days" name="days" type="number" min="1" max="366" value="30" required>
+      </label>
+
+      <button id="submitButton" type="submit">Get rainfall estimate</button>
+    </form>
+
+    <p class="message" id="message" role="status" aria-live="polite" hidden></p>
+
+    <section class="result" id="result" aria-live="polite" hidden>
+      <h2>Rainfall estimate</h2>
+      <p><strong>Location:</strong> <span id="resolvedLocation"></span></p>
+      <p><strong>Period:</strong> <span id="period"></span></p>
+      <p><strong>Total rainfall:</strong> <span id="rainfall"></span></p>
+      <p><strong>Estimated harvestable water:</strong> <span id="harvest"></span></p>
+      <p><strong>Days with data:</strong> <span id="coverage"></span></p>
+      <p class="source-note" id="source"></p>
+    </section>
+  </main>
+
+  <script>
+    const form = document.getElementById("rainfallForm");
+    const button = document.getElementById("submitButton");
+    const message = document.getElementById("message");
+    const result = document.getElementById("result");
+
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      message.hidden = true;
+      result.hidden = true;
+      button.disabled = true;
+      button.textContent = "Fetching rainfall…";
+
+      const requestData = {
+        location: document.getElementById("location").value.trim(),
+        roof_area_m2: Number(document.getElementById("roofArea").value),
+        days: Number(document.getElementById("days").value)
+      };
+
+      try {
+        const response = await fetch("http://127.0.0.1:8000/api/rainfall", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(requestData)
+        });
+        const data = await response.json();
+        if (!response.ok) {
+          throw new Error(data.detail || "Could not fetch rainfall for this location.");
+        }
+
+        const place = [data.location.name, data.location.admin1, data.location.country]
+          .filter(Boolean)
+          .join(", ");
+        document.getElementById("resolvedLocation").textContent = place;
+        document.getElementById("period").textContent =
+          `${data.period.start_date} to ${data.period.end_date}`;
+        document.getElementById("rainfall").textContent =
+          `${Number(data.total_rainfall_mm).toLocaleString(undefined, { maximumFractionDigits: 1 })} mm`;
+        document.getElementById("harvest").textContent =
+          `${Number(data.estimated_harvestable_liters).toLocaleString(undefined, { maximumFractionDigits: 1 })} L`;
+        document.getElementById("coverage").textContent =
+          `${data.days_with_data} of ${data.days_requested} days`;
+        document.getElementById("source").textContent =
+          `${data.data_source}. Rainfall and harvest volumes are estimates.`;
+        result.hidden = false;
+      } catch (error) {
+        message.textContent = `${error.message} Check that the Boond API is running at 127.0.0.1:8000.`;
+        message.hidden = false;
+      } finally {
+        button.disabled = false;
+        button.textContent = "Get rainfall estimate";
+      }
+    });
+  </script>
+</body>
+</html>
