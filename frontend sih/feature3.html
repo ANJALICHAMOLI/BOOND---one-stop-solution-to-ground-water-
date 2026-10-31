@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0c1835">
+  <title>Groundwater Depth | Boond</title>
+  <style>
+    :root { color-scheme: dark; font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+    * { box-sizing: border-box; }
+    body { min-height: 100vh; margin: 0; padding: 28px 20px 48px; color: #eaf2ff; background: radial-gradient(ellipse at 50% 5%, #16485b 0, #102b45 34%, #08132e 78%); }
+    .topbar { max-width: 1120px; margin: 0 auto 70px; display: flex; justify-content: space-between; align-items: center; }
+    .topbar a { color: #dceaff; text-decoration: none; font-weight: 650; }
+    .brand { letter-spacing: .04em; }
+    main { width: min(680px, 100%); margin: 0 auto; padding: clamp(24px, 5vw, 44px); border: 1px solid #ffffff2d; border-radius: 24px; background: #0c1733ef; box-shadow: 0 24px 70px #02081766; }
+    h1 { margin: 0 0 12px; font-size: clamp(2rem, 6vw, 3rem); line-height: 1.1; letter-spacing: -.04em; background: linear-gradient(90deg, #edf3ff, #83dfeb); color: transparent; background-clip: text; }
+    .intro { margin: 0 0 26px; color: #aab7ce; line-height: 1.65; }
+    form { display: grid; gap: 16px; }
+    label { display: grid; gap: 8px; font-weight: 650; color: #d8e5f8; }
+    input { width: 100%; min-height: 52px; padding: 12px 15px; border: 1px solid #ffffff29; border-radius: 12px; background: #0a1430; color: #f3f7ff; font: inherit; }
+    input:focus { outline: 3px solid #71c9d84d; border-color: #79d1dd; }
+    button { min-height: 54px; margin-top: 4px; border: 0; border-radius: 12px; background: #448da0; color: #fff; font: inherit; font-weight: 750; cursor: pointer; }
+    button:hover { background: #51a5b7; }
+    button:disabled { opacity: .65; cursor: wait; }
+    .message { margin: 18px 0 0; color: #ff718c; line-height: 1.5; }
+    .result { margin-top: 24px; padding: 22px; border: 1px solid #72d0c34d; border-radius: 16px; background: #102c37; }
+    .result h2 { margin: 0 0 8px; font-size: 1.2rem; }
+    .depth { margin: 0 0 14px; color: #99e5d4; font-size: 2rem; font-weight: 800; }
+    .result p { margin: 9px 0; color: #d1deea; line-height: 1.5; }
+    .note, .source { color: #aab7ce !important; font-size: .9rem; }
+    .source a { color: #9ee7ee; }
+    [hidden] { display: none !important; }
+    @media (max-width: 560px) { .topbar { margin-bottom: 36px; } body { padding-inline: 14px; } main { border-radius: 18px; } }
+  </style>
+</head>
+<body>
+  <nav class="topbar" aria-label="Main navigation">
+    <a href="feature.html">← Back to features</a>
+    <a class="brand" href="index.html">BOOND</a>
+  </nav>
+
+  <main>
+    <h1>Groundwater Depth 📏</h1>
+    <p class="intro">Find the nearest CGWB monitoring station to a district or locality.</p>
+
+    <form id="groundwaterForm">
+      <label for="state">State or union territory
+        <input id="state" name="state" autocomplete="address-level1" placeholder="e.g. Delhi" required>
+      </label>
+      <label for="district">District or locality
+        <input id="district" name="district" autocomplete="address-level2" placeholder="e.g. Saket or South Delhi" required>
+      </label>
+      <button id="submitButton" type="submit">Find groundwater reading</button>
+    </form>
+
+    <p id="message" class="message" role="status" aria-live="polite" hidden></p>
+
+    <section id="result" class="result" aria-live="polite" hidden>
+      <h2>Nearest CGWB monitoring station</h2>
+      <p><strong>Area searched:</strong> <span id="place"></span></p>
+      <p class="depth"><span id="depth"></span> m below ground</p>
+      <p><strong>Monitoring station:</strong> <span id="station"></span></p>
+      <p><strong>Station district:</strong> <span id="stationDistrict"></span></p>
+      <p><strong>Distance from area:</strong> <span id="distance"></span> km (straight line)</p>
+      <p><strong>Reading date:</strong> <span id="date"></span></p>
+      <p><strong>Agency:</strong> <span id="agency"></span></p>
+      <p class="note">This is the nearest station found in the selected state's CGWB data. Its reading may not represent the depth at an individual well, and may not be recent; check the reading date.</p>
+      <p id="locationAttribution" class="source" hidden></p>
+      <p class="source"><span id="dataSource"></span> · <a id="sourceLink" target="_blank" rel="noopener noreferrer">View source data</a></p>
+    </section>
+  </main>
+
+  <script>
+    const form = document.getElementById("groundwaterForm");
+    const button = document.getElementById("submitButton");
+    const message = document.getElementById("message");
+    const result = document.getElementById("result");
+
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      message.hidden = true;
+      result.hidden = true;
+      button.disabled = true;
+      button.textContent = "Looking up data…";
+
+      try {
+        const response = await fetch("/api/groundwater", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            state: document.getElementById("state").value.trim(),
+            district: document.getElementById("district").value.trim()
+          })
+        });
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.detail || "Could not find a groundwater reading.");
+
+        document.getElementById("place").textContent = `${data.requested_location}, ${data.state} (${data.resolved_location})`;
+        document.getElementById("depth").textContent = Number(data.depth_below_ground_m).toLocaleString(undefined, { maximumFractionDigits: 2 });
+        document.getElementById("station").textContent = data.station;
+        document.getElementById("stationDistrict").textContent = data.station_district || "Not specified";
+        document.getElementById("distance").textContent = Number(data.distance_km).toLocaleString(undefined, { maximumFractionDigits: 1 });
+        document.getElementById("date").textContent = data.observed_at;
+        document.getElementById("agency").textContent = data.agency;
+        document.getElementById("dataSource").textContent = data.data_source;
+        document.getElementById("sourceLink").href = data.source_url;
+        const attribution = document.getElementById("locationAttribution");
+        if (data.location_source === "OpenStreetMap") {
+          attribution.innerHTML = 'Location data © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">OpenStreetMap contributors</a>.';
+          attribution.hidden = false;
+        } else {
+          attribution.textContent = "Location data by GeoNames.";
+          attribution.hidden = false;
+        }
+        result.hidden = false;
+      } catch (error) {
+        message.textContent = error.message;
+        message.hidden = false;
+      } finally {
+        button.disabled = false;
+        button.textContent = "Find groundwater reading";
+      }
+    });
+  </script>
+</body>
+</html>
