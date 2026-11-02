@@ -1,176 +1,98 @@
-// Location search (dummy handler)
-document.getElementById("locationInput").addEventListener("keyup", function (e) {
-  if (e.key === "Enter") {
-    alert("Searching for location: " + this.value);
-  }
-});
-
-// Toggle collapse/expand
-document.querySelectorAll('.feature-card').forEach(card => {
-  card.addEventListener('click', function(e) {
-    // prevent immediate redirect when toggling
-    if(e.target.tagName.toLowerCase() === 'h3' || e.target.tagName.toLowerCase() === 'p'){
-      e.stopPropagation();
-      this.classList.toggle('collapsed');
-    }
-  });
-});
-// --- Site wallpaper upload and persistence ---
-const siteWallpaperInput = document.getElementById('siteWallpaperInput');
-const siteOverlay = document.querySelector('.site-overlay');
-
-// helper to set wallpaper URL and persist
-function setSiteWallpaper(url) {
-  document.body.style.backgroundImage = url ? `url('${url}')` : '';
-  try { localStorage.setItem('siteWallpaper', url || ''); } catch(e){ /* ignore storage errors */ }
-}
-
-// load saved wallpaper (if any) on page load
-try {
-  const saved = localStorage.getItem('siteWallpaper');
-  if (saved) {
-    // saved may be a blob URL or data URL
-    setSiteWallpaper(saved);
-  }
-} catch(e) { /* ignore */ }
-
-// when user selects a file, create an object URL and set as background
-if (siteWallpaperInput) {
-  siteWallpaperInput.addEventListener('change', (e) => {
-    const f = e.target.files && e.target.files[0];
-    if (!f) return;
-    // small safety: only allow images
-    if (!f.type.startsWith('image/')) {
-      alert('Please upload an image file for the wallpaper.');
-      return;
-    }
-    const url = URL.createObjectURL(f);
-    setSiteWallpaper(url);
-
-    // release previous object URLs on page unload is optional;
-    // keep it stored in localStorage so reloading keeps the wallpaper during this session.
-  });
-}
-
-// Optional helper: toggle overlay darkness (you can call from console or create a button)
-window.toggleSiteOverlayDark = function(toggle) {
-  if (!siteOverlay) return;
-  if (toggle === undefined) siteOverlay.classList.toggle('dark');
-  else if (toggle) siteOverlay.classList.add('dark');
-  else siteOverlay.classList.remove('dark');
-};
-// Wait until the DOM is fully loaded
-document.addEventListener('DOMContentLoaded', function () {
-  // Wallpaper upload preview
-  const wallpaperInput = document.getElementById('wallpaperInput');
-  if (wallpaperInput) {
-    wallpaperInput.addEventListener('change', function (e) {
-      const file = e.target.files[0];
-      if (file) {
-        const url = URL.createObjectURL(file);
-        document.querySelector('.features-hero').style.backgroundImage = `url('${url}')`;
-      }
-    });
-  }
-
-  // Side image upload preview
-//   const sideImageInput = document.getElementById('sideImageInput');
-//   if (sideImageInput) {
-//     sideImageInput.addEventListener('change', function (e) {
-//       const file = e.target.files[0];
-//       if (file) {
-//         const url = URL.createObjectURL(file);
-//         document.getElementById('sideImagePreview').src = url;
-//       }
-//     });
-//   }
-// });
-// document.getElementById("languageSelect").addEventListener("change", function () {
-//   const selectedLang = this.value;
-//   console.log("Language switched to:", selectedLang);
-
-//   // Example: update `data-i18n` texts if you add translations later
-//   // translatePage(selectedLang);
-// });
 const translations = {
   en: {
-    featuresHeading: "Features",
-    featuresSub: "Explore powerful features that make water harvesting easier and healthier.",
-    plansHeading: "Subscription Plans"
+    tagline: "every drop counts",
+    home: "Home",
+    contact: "Contact",
+    featuresHeading: "EXPLORE POWERFUL FEATURES",
+    feature1Title: "Harvesting Feasibility 🏠💧",
+    feature1Text: "Check if your rooftop is ready for rainwater harvesting — get a clear YES/NO with tips to improve your setup.",
+    feature2Title: "Money Matters 💸",
+    feature2Text: "Understand costs, savings, and funding options for water projects.",
+    feature3Title: "Groundwater Depth 📏",
+    feature3Text: "Check the groundwater levels in your area with updated data.",
+    feature4Title: "Rain Check ☔",
+    feature4Text: "Provides local rainfall data and trends.",
+    feature5Title: "Runoff Meter ⚡",
+    feature5Text: "Measure and predict water runoff during rains for better planning.",
+    feature6Title: "Red Alert Meter ⚠️",
+    feature6Text: "Real-time Red Alert system notifies users of rising water-borne disease risks in their area.",
+    feature7Title: "👷📞 Contact a Contractor",
+    feature7Text: "Need professional help? Instantly connect with verified local contractors to install or maintain your harvesting system.",
+    plansHeading: "Subscription Plans",
+    freePlan: "BOOND — Free (7 day pro trial included)",
+    proPlan: "BOOND Pro — 99 INR/month",
+    premiumPlan: "BOOND Premium — 200 INR/month",
+    address: "Address:",
+    call: "Call:",
+    email: "Email:",
+    followers: "Followers:"
   },
   hi: {
-    featuresHeading: "विशेषताएँ",
-    featuresSub: "पानी संरक्षण को आसान और स्वास्थ्यकर बनाने वाली शक्तिशाली विशेषताओं का अन्वेषण करें।",
-    plansHeading: "सदस्यता योजनाएँ"
+    tagline: "हर बूंद मायने रखती है",
+    home: "होम",
+    contact: "संपर्क",
+    featuresHeading: "प्रमुख सुविधाएँ देखें",
+    feature1Title: "वर्षा जल संचयन की व्यवहार्यता 🏠💧",
+    feature1Text: "जाँचें कि आपकी छत वर्षा जल संचयन के लिए उपयुक्त है या नहीं, और व्यवस्था सुधारने के सुझाव पाएँ।",
+    feature2Title: "लागत और बचत 💸",
+    feature2Text: "जल परियोजनाओं की लागत, बचत और वित्तीय सहायता के विकल्प जानें।",
+    feature3Title: "भूजल की गहराई 📏",
+    feature3Text: "अपने क्षेत्र के भूजल स्तर की उपलब्ध जानकारी देखें।",
+    feature4Title: "वर्षा की जानकारी ☔",
+    feature4Text: "अपने क्षेत्र की वर्षा के आँकड़े और रुझान देखें।",
+    feature5Title: "जल बहाव मापक ⚡",
+    feature5Text: "बेहतर योजना के लिए वर्षा के दौरान जल बहाव का मापन और अनुमान करें।",
+    feature6Title: "जोखिम सूचना ⚠️",
+    feature6Text: "यह सुविधा क्षेत्र में जलजनित रोगों के जोखिम की सूचना देती है।",
+    feature7Title: "👷📞 ठेकेदार से संपर्क",
+    feature7Text: "वर्षा जल संचयन प्रणाली लगाने या उसकी देखभाल के लिए स्थानीय ठेकेदार से संपर्क करें।",
+    plansHeading: "सदस्यता योजनाएँ",
+    freePlan: "BOOND — निःशुल्क (7 दिन का प्रो परीक्षण शामिल)",
+    proPlan: "BOOND Pro — 99 रुपये/माह",
+    premiumPlan: "BOOND Premium — 200 रुपये/माह",
+    address: "पता:",
+    call: "फ़ोन:",
+    email: "ईमेल:",
+    followers: "सोशल मीडिया:"
   }
 };
-function translatePage(lang) {
-  document.querySelectorAll("[data-i18n]").forEach(el => {
-    const key = el.getAttribute("data-i18n");
-    if (translations[lang] && translations[lang][key]) {
-      el.textContent = translations[lang][key];
-    }
+
+function setLanguage(language) {
+  const copy = translations[language];
+  if (!copy) return;
+
+  document.documentElement.lang = language;
+  document.querySelectorAll("[data-i18n]").forEach((element) => {
+    const translatedText = copy[element.dataset.i18n];
+    if (translatedText) element.textContent = translatedText;
   });
-}
-document.getElementById("languageSelect").addEventListener("change", function () {
-  const selectedLang = this.value;
-  translatePage(selectedLang);
-});
 
-// Initialize map (hidden at first)
-// Initialize map (hidden at first)
-const map = L.map("map", { zoomControl: true }).setView([20.5937, 78.9629], 5);
+  document.querySelectorAll("[data-lang]").forEach((button) => {
+    const selected = button.dataset.lang === language;
+    button.setAttribute("aria-pressed", String(selected));
+    button.classList.toggle("active", selected);
+    button.style.backgroundColor = selected ? "#0a6fb3" : "#ffffff";
+    button.style.color = selected ? "#ffffff" : "#242323";
+  });
 
-// Add OpenStreetMap tiles
-L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-  attribution: "© OpenStreetMap contributors"
-}).addTo(map);
-
-// let map = null;
-let userMarker = null;
-
-// GPS tracking with map popup
-document.getElementById("gpsBtn").addEventListener("click", function () {
-  if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(
-      function (pos) {
-        const lat = pos.coords.latitude;
-        const lon = pos.coords.longitude;
-
-        // Show the map
-        const mapDiv = document.getElementById("map");
-        mapDiv.style.visibility = "visible";
-
-        // Initialize map if not already
-        if (!map) {
-          map = L.map("map", { zoomControl: true }).setView([lat, lon], 15);
-          L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-            attribution: "© OpenStreetMap contributors"
-          }).addTo(map);
-        } else {
-          map.setView([lat, lon], 15);
-          map.invalidateSize();
-        }
-
-        // Update input box
-        const input = document.getElementById("locationInput");
-        input.value = `${lat.toFixed(5)}, ${lon.toFixed(5)}`;
-
-        // Add or move marker with popup
-        if (userMarker) {
-          userMarker.setLatLng([lat, lon]).bindPopup("📍 You are here!").openPopup();
-        } else {
-          userMarker = L.marker([lat, lon]).addTo(map)
-            .bindPopup("📍 You are here!")
-            .openPopup();
-        }
-
-      },
-      function (err) {
-        alert("Error getting location: " + err.message);
-      }
-    );
-  } else {
-    alert("Geolocation not supported in this browser.");
+  try {
+    localStorage.setItem("boond_language", language);
+  } catch (_) {
+    // The page still works if the browser blocks local storage.
   }
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  let savedLanguage = "en";
+  try {
+    savedLanguage = localStorage.getItem("boond_language") || "en";
+  } catch (_) {
+    // Use English when local storage is unavailable.
+  }
+
+  document.querySelectorAll("[data-lang]").forEach((button) => {
+    button.addEventListener("click", () => setLanguage(button.dataset.lang));
+  });
+
+  setLanguage(savedLanguage);
 });
